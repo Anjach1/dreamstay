@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DreamStay Luxury Hotels</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'brand-blue': '#1a56db',
+            'brand-dark': '#0f172a',
+            'brand-light': '#f8fafc',
+          },
+          fontFamily: {
+            'sans': ['Poppins', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      scroll-behavior: smooth;
+    }
+    
+    .hero-animation {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+    
+    .glass-card {
+      backdrop-filter: blur(10px);
+      background-color: rgba(255, 255, 255, 0.6);
+    }
+    
+    .room-card:hover .room-image {
+      transform: scale(1.05);
+    }
+    
+    .room-image {
+      transition: transform 0.5s ease;
+    }
+    
+    .testimonial-carousel {
+      scroll-snap-type: x mandatory;
+    }
+    
+    .testimonial-item {
+      scroll-snap-align: start;
+    }
+    
+    .animate-float {
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+      100% { transform: translateY(0px); }
+    }
+  </style>
+</head>
+<body class="bg-brand-light text-gray-800">
+  <!-- Header -->
+  <header class="bg-white shadow-lg fixed w-full z-50 transition-all duration-300" id="mainHeader">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="flex items-center space-x-2">
+        <div class="text-brand-blue">
+          <i class="fas fa-hotel text-3xl"></i>
+        </div>
+        <h1 class="text-3xl font-bold text-brand-blue tracking-tight">DreamStay</h1>
+      </div>
+      
+      <nav class="hidden md:flex space-x-8">
+        <a href="#home" class="text-gray-700 hover:text-brand-blue transition font-medium">Home</a>
+        <a href="#rooms" class="text-gray-700 hover:text-brand-blue transition font-medium">Rooms</a>
+        <a href="#amenities" class="text-gray-700 hover:text-brand-blue transition font-medium">Amenities</a>
+        <a href="#gallery" class="text-gray-700 hover:text-brand-blue transition font-medium">Gallery</a>
+        <a href="#testimonials" class="text-gray-700 hover:text-brand-blue transition font-medium">Testimonials</a>
+        <a href="#contact" class="text-gray-700 hover:text-brand-blue transition font-medium">Contact</a>
+      </nav>
+      
+      <div class="flex items-center space-x-4">
+        <a href="#book" class="hidden md:block bg-brand-blue text-white px-6 py-2 rounded-full hover:bg-blue-700 transition font-medium">Book Now</a>
+        <button id="mobileMenuBtn" class="md:hidden text-gray-700">
+          <i class="fas fa-bars text-2xl"></i>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="md:hidden bg-white hidden">
+      <div class="px-4 py-5 space-y-3">
+        <a href="#home" class="block text-gray-700 hover:text-brand-blue transition font-medium">Home</a>
+        <a href="#rooms" class="block text-gray-700 hover:text-brand-blue transition font-medium">Rooms</a>
+        <a href="#amenities" class="block text-gray-700 hover:text-brand-blue transition font-medium">Amenities</a>
+        <a href="#gallery" class="block text-gray-700 hover:text-brand-blue transition font-medium">Gallery</a>
+        <a href="#testimonials" class="block text-gray-700 hover:text-brand-blue transition font-medium">Testimonials</a>
+        <a href="#contact" class="block text-gray-700 hover:text-brand-blue transition font-medium">Contact</a>
+        <a href="#book" class="block bg-brand-blue text-white px-6 py-2 rounded-full hover:bg-blue-700 transition font-medium text-center">Book Now</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section with Three.js -->
+  <section id="home" class="relative h-screen flex items-center justify-center">
+    <div id="heroAnimation" class="hero-animation"></div>
+    <div class="container mx-auto px-6 relative z-10 mt-16">
+      <div class="max-w-3xl glass-card p-10 rounded-xl">
+        <h2 class="text-5xl font-bold mb-4 text-brand-dark animate-float">Experience Luxury Redefined</h2>
+        <p class="text-xl mb-8 text-gray-700">Discover the perfect blend of comfort, elegance and personalized service at DreamStay's premier locations worldwide.</p>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="#book" class="bg-brand-blue text-white px-8 py-4 rounded-full hover:bg-blue-700 transition text-center font-medium">Book Your Stay</a>
+          <a href="#rooms" class="bg-white text-brand-blue border border-brand-blue px-8 py-4 rounded-full hover:bg-gray-50 transition text-center font-medium">Explore Rooms</a>
+        </div>
+      </div>
+    </div>
+    <div class="absolute bottom-10 left-0 right-0 text-center">
+      <a href="#rooms" class="text-white animate-bounce inline-block">
+        <i class="fas fa-chevron-down text-2xl"></i>
+      </a>
+    </div>
+  </section>
+
+  <!-- Booking Widget -->
+  <section id="book" class="bg-white py-8 shadow-md">
+    <div class="container mx-auto px-6">
+      <form class="grid grid-cols-1 md:grid-cols-5 gap-4">
+        <div class="col-span-1">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Check In</label>
+          <input type="date" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue">
+        </div>
+        <div class="col-span-1">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Check Out</label>
+          <input type="date" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue">
+        </div>
+        <div class="col-span-1">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Guests</label>
+          <select class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue">
+            <option value="1">1 Guest</option>
+            <option value="2">2 Guests</option>
+            <option value="3">3 Guests</option>
+            <option value="4">4 Guests</option>
+          </select>
+        </div>
+        <div class="col-span-1">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Room Type</label>
+          <select class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue">
+            <option value="standard">Standard Room</option>
+            <option value="deluxe">Deluxe Room</option>
+            <option value="executive">Executive Suite</option>
+            <option value="presidential">Presidential Suite</option>
+          </select>
+        </div>
+        <div class="col-span-1">
+          <label class="block text-sm font-medium text-gray-700 mb-1 opacity-0">Search</label>
+          <button type="submit" class="w-full bg-brand-blue text-white py-2 rounded-md hover:bg-blue-700 transition">Check Availability</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- Rooms Section -->
+  <section id="rooms" class="py-20 px-6">
+    <div class="container mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-bold text-brand-dark mb-4">Exceptional Accommodations</h2>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">Choose from our selection of meticulously designed rooms and suites, each offering unique comforts and stunning views.</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <!-- Standard Room -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden room-card hover:shadow-xl transition duration-300">
+          <div class="overflow-hidden">
+            <img src="/api/placeholder/400/250" alt="Standard Room" class="w-full room-image">
+          </div>
+          <div class="p-6">
+            <div class="flex justify-between items-start mb-2">
+              <h3 class="text-xl font-semibold">Standard Room</h3>
+              <span class="text-brand-blue font-bold">$80/night</span>
+            </div>
+            <p class="text-gray-600 mb-4">Cozy room with queen bed, perfect for solo travelers or couples on a budget.</p>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1 rounded-full">25m²</span>
+              <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1 rounded-full">Queen Bed</span>
+              <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1 rounded-full">City View</span>
+            </div>
+            <button class="w-full bg-brand-blue text-white py-2 rounded-lg hover:bg-blue-700 transition">Book Now</button>
+          </div>
+        </div>
+        
+        <!-- Deluxe Room -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden room-card hover:shadow-xl transition duration-300">
+          <div class="overflow-hidden">
+            <img src="/api/placeholder/400/250" alt="Deluxe Room" class="w-full room-image">
+          </div>
+          <div class="p-6">
+            <div class="flex justify-between items-start mb-2">
+              <h3 class="text-xl font-semibold">Deluxe Room</h3>
+              <span class="text-brand-blue font-bold">$120/night</span>
+            </div>
+            <p class="text-gray-600 mb-4">Spacious room with king-sized bed, ocean view and premium amenities.</p>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1 rounded-full">35m²</span>
+              <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1 rounded-full">King Bed</span>
+              <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1 rounded-full">Ocean View</span>
+            </div>
+            <button class="w-full bg-brand-blue text-white py-2 rounded-lg hover:bg-blue-700 transition">Book Now</button>
+          </div>
+        </div>
+        
+        <!-- Executive Suite -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden room-card hover:shadow-xl transition duration-300">
+          <div class="overflow-hidden">
+            <img src="/api/placeholder/400/250" alt="Executive Suite" class="w-full room-image">
+          </div>
+          <div class="p-6">
+            <div class="flex justify-between items-start mb-2">
+              <h3 class="text-xl font-semibold">Executive Suite</h3>
+              <span class="text-brand-blue font-bold">$250/night</span>
+            </div>
+            <p class="text-gray-600 mb-4">Elegant suite with separate living area, premium service, and breathtaking views.</p>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1 rounded-full">55m²</span>
+              <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1 rounded-full">King Bed</span>
+              <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1 rounded-full">Panoramic View</span>
+            </div>
+            <button class="w-full bg-brand-blue text-white py-2 rounded-lg hover:bg-blue-700 transition">Book Now</button>
+          </div>
+        </div>
+        
+        <!-- Presidential Suite -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden room-card hover:shadow-xl transition duration-300">
+          <div class="overflow-hidden">
+            <img src="/api/placeholder/400/250" alt="Presidential Suite" class="w-full room-image">
+          </div>
+          <div class="p-6">
+            <div class="flex justify-between items-start mb-2">
+              <h3 class="text-xl font-semibold">Presidential Suite</h3>
+              <span class="text-brand-blue font-bold">$450/night</span>
+            </div>
+            <p class="text-gray-600 mb-4">Ultimate luxury suite with private terrace, personal butler, and unparalleled elegance.</p>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1 rounded-full">120m²</span>
+              <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1 rounded-full">Super King</span>
+              <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1 rounded-full">Private Terrace</span>
+            </div>
+            <button class="w-full bg-brand-blue text-white py-2 rounded-lg hover:bg-blue-700 transition">Book Now</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Amenities Section -->
+  <section id="amenities" class="py-20 px-6 bg-gray-50">
+    <div class="container mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-bold text-brand-dark mb-4">World-Class Amenities</h2>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">Indulge in our extensive range of services designed to ensure your complete comfort and satisfaction.</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="bg-white p-8 rounded-xl shadow-md hover:shadow-lg transition text-center">
+          <div class="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-6">
+            <i class="fas fa-utensils text-3xl text-brand-blue"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-4">Gourmet Dining</h3>
+          <p class="text-gray-600">Experience culinary excellence at our award-winning restaurant featuring international cuisine prepared by world-class chefs.</p>
+        </div>
+        
+        <div class="bg-white p-8 rounded-xl shadow-md hover:shadow-lg transition text-center">
+          <div class="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-6">
+            <i class="fas fa-spa text-3xl text-brand-blue"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-4">Luxury Spa</h3>
+          <p class="text-gray-600">Rejuvenate your body and mind with our premium spa treatments, including massages, facials, and therapeutic baths.</p>
+        </div>
+        
+        <div class="bg-white p-8 rounded-xl shadow-md hover:shadow-lg transition text-center">
+          <div class="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-6">
+            <i class="fas fa-swimming-pool text-3xl text-brand-blue"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-4">Infinity Pool</h3>
+          <p class="text-gray-600">Take a refreshing swim in our temperature-controlled infinity pool with breathtaking views of the surrounding landscape.</p>
+        </div>
+        
+        <div class="bg-white p-8 rounded-xl shadow-md hover:shadow-lg transition text-center">
+          <div class="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-6">
+            <i class="fas fa-dumbbell text-3xl text-brand-blue"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-4">Fitness Center</h3>
+          <p class="text-gray-600">Stay in shape with our state-of-the-art fitness equipment and personal training sessions available upon request.</p>
+        </div>
+        
+        <div class="bg-white p-8 rounded-xl shadow-md hover:shadow-lg transition text-center">
+          <div class="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-6">
+            <i class="fas fa-concierge-bell text-3xl text-brand-blue"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-4">24/7 Concierge</h3>
+          <p class="text-gray-600">Our dedicated concierge team is available around the clock to assist with reservations, travel arrangements, and special requests.</p>
+        </div>
+        
+        <div class="bg-white p-8 rounded-xl shadow-md hover:shadow-lg transition text-center">
+          <div class="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-6">
+            <i class="fas fa-wifi text-3xl text-brand-blue"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-4">High-Speed WiFi</h3>
+          <p class="text-gray-600">Stay connected with complimentary high-speed internet access throughout the entire property.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery Section with p5.js -->
+  <section id="gallery" class="py-20 px-6">
+    <div class="container mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-bold text-brand-dark mb-4">Gallery</h2>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">Take a visual journey through our stunning property and preview the luxury that awaits.</p>
+      </div>
+      
+      <div class="h-96 w-full relative mb-8" id="galleryCanvas">
+        <!-- p5.js canvas will be injected here -->
+      </div>
+      
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <img src="/api/placeholder/400/300" alt="Hotel Lobby" class="w-full h-64 object-cover rounded-lg hover:opacity-90 transition cursor-pointer">
+        <img src="/api/placeholder/400/300" alt="Hotel Pool" class="w-full h-64 object-cover rounded-lg hover:opacity-90 transition cursor-pointer">
+        <img src="/api/placeholder/400/300" alt="Hotel Restaurant" class="w-full h-64 object-cover rounded-lg hover:opacity-90 transition cursor-pointer">
+        <img src="/api/placeholder/400/300" alt="Hotel Spa" class="w-full h-64 object-cover rounded-lg hover:opacity-90 transition cursor-pointer">
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section id="testimonials" class="py-20 px-6 bg-gray-50">
+    <div class="container mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-bold text-brand-dark mb-4">Guest Experiences</h2>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">Hear what our guests have to say about their stay at DreamStay Hotels.</p>
+      </div>
+      
+      <div class="relative">
+        <div class="testimonial-carousel flex overflow-x-auto pb-8 hide-scrollbar">
+          <div class="testimonial-item min-w-[350px] md:min-w-[400px] mx-4 bg-white p-6 rounded-xl shadow-md">
+            <div class="flex items-center mb-4">
+              <div class="w-12 h-12 bg-gray-200 rounded-full mr-4"></div>
+              <div>
+                <h4 class="font-semibold">Emma Thompson</h4>
+                <div class="flex text-yellow-400">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                </div>
+              </div>
+            </div>
+            <p class="text-gray-600">"Our stay at DreamStay was absolutely magnificent. The staff went above and beyond to ensure our comfort, and the amenities were world-class. We'll definitely be returning!"</p>
+          </div>
+          
+          <div class="testimonial-item min-w-[350px] md:min-w-[400px] mx-4 bg-white p-6 rounded-xl shadow-md">
+            <div class="flex items-center mb-4">
+              <div class="w-12 h-12 bg-gray-200 rounded-full mr-4"></div>
+              <div>
+                <h4 class="font-semibold">Michael Anderson</h4>
+                <div class="flex text-yellow-400">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                </div>
+              </div>
+            </div>
+            <p class="text-gray-600">"As a business traveler, I appreciate efficiency and comfort. DreamStay delivers both impeccably. The executive suite was spacious, and the high-speed internet never failed me during important calls."</p>
+          </div>
+          
+          <div class="testimonial-item min-w-[350px] md:min-w-[400px] mx-4 bg-white p-6 rounded-xl shadow-md">
+            <div class="flex items-center mb-4">
+              <div class="w-12 h-12 bg-gray-200 rounded-full mr-4"></div>
+              <div>
+                <h4 class="font-semibold">Sophia Chen</h4>
+                <div class="flex text-yellow-400">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star-half-alt"></i>
+                </div>
+              </div>
+            </div>
+            <p class="text-gray-600">"The culinary experience at DreamStay was unforgettable. Each meal was a masterpiece, and the staff was attentive to my dietary preferences. The spa treatments were equally exceptional."</p>
+          </div>
+          
+          <div class="testimonial-item min-w-[350px] md:min-w-[400px] mx-4 bg-white p-6 rounded-xl shadow-md">
+            <div class="flex items-center mb-4">
+              <div class="w-12 h-12 bg-gray-200 rounded-full mr-4"></div>
+              <div>
+                <h4 class="font-semibold">James Wilson</h4>
+                <div class="flex text-yellow-400">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                </div>
+              </div>
+            </div>
+            <p class="text-gray-600">"My family and I had an amazing vacation at DreamStay. The kids loved the pool, and we appreciated the attentive service. The rooms were immaculate and the views breathtaking."</p>
+          </div>
+        </div>
+        
+        <div class="absolute top-1/2 -left-4 transform -translate-y-1/2 hidden md:block">
+          <button id="prevTestimonial" class="bg-white w-10 h-10 rounded-full shadow-md flex items-center justify-center">
+            <i class="fas fa-chevron-left text-gray-600"></i>
+          </button>
+        </div>
+        
+        <div class="absolute top-1/2 -right-4 transform -translate-y-1/2 hidden md:block">
+          <button id="nextTestimonial" class="bg-white w-10 h-10 rounded-full shadow-md flex items-center justify-center">
+            <i class="fas fa-chevron-right text-gray-600"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Location Section -->
+  <section class="py-20 px-6">
+    <div class="container mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+        <div>
+          <h2 class="text-4xl font-bold text-brand-dark mb-6">Prime Location</h2>
+          <p class="text-lg text-gray-600 mb-6">Situated in the heart of the city, DreamStay Hotel offers convenient access to major attractions, shopping districts, and business centers. Our strategic location ensures that you're never far from where you need to be.</p>
+          <ul class="space-y-4 mb-8">
+            <li class="flex items-start">
+              <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+              <span>10 minutes from International Airport</span>
+            </li>
+            <li class="flex items-start">
+              <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+              <span>5 minutes walk to Central Business District</span>
+            </li>
+            <li class="flex items-start">
+              <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+              <span>Adjacent to premium shopping mall</span>
+            </li>
+            <li class="flex items-start">
+              <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+              <span>Near popular tourist attractions</span>
+            </li>
+          </ul>
+          <a href="#contact" class="bg-brand-blue text-white px-6 py-3 rounded-full hover:bg-blue-700 transition inline-block">Get Directions</a>
+        </div>
+        
+        <div class="h-96 bg-gray-200 rounded-xl shadow-lg overflow-hidden">
+          <!-- Map placeholder - would be integrated with Google Maps API in production -->
+          <div class="w-full h-full flex items-center justify-center">
+            <div class="text-center">
+              <i class="fas fa-map-marker-alt text-4xl text-brand-blue mb-4"></i>
+              <p class="text-gray-700">Interactive Map</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="py-20 px-6 bg-gray-50">
+    <div class="container mx
